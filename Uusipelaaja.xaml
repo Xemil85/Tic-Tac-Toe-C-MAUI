@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="final_work.UusiPelaaja"
+             Title="Uusi pelaaja">
+    <VerticalStackLayout VerticalOptions="Center" Spacing="20">
+        <Label Text="Täytä pelaajan tiedot" HorizontalOptions="Center" FontSize="30" />
+
+        <Grid ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Etunimi:" FontSize="20" Grid.Row="0" Grid.Column="0" />
+            <Entry x:Name="Etunimi" WidthRequest="200" Grid.Row="0" Grid.Column="1" />
+            <Label Text="Sukunimi:" FontSize="20" Grid.Row="1" Grid.Column="0" />
+            <Entry x:Name="Sukunimi" WidthRequest="200" Grid.Row="1" Grid.Column="1" />
+            <Label Text="Syntymävuosi:" FontSize="20" Grid.Row="2" Grid.Column="0" />
+            <Entry x:Name="Syntymavuosi" WidthRequest="200" Grid.Row="2" Grid.Column="1" />
+        </Grid>
+        
+        <Button x:Name="TallennaPelaaja" Text="Tallenna pelaaja" WidthRequest="150" />
+
+    </VerticalStackLayout>
+</ContentPage>
