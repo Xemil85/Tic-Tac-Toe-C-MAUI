@@ -17,8 +17,6 @@
 
             <Button x:Name="UusiPelaaja" Text="Uusi pelaaja" WidthRequest="150"/>
             <Button x:Name="EntinenPelaaja" Text="Entinen pelaaja" WidthRequest="150"/>
-            <Button x:Name="Vastustaja" Text="Vastustaja näkymä" />
-            <Button x:Name="Ristinolla" Text="Ristinolla näkymä" />
 
         </VerticalStackLayout>
     </ScrollView>
