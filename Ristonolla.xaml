@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Button0" WidthRequest="100" 
+            <Button x:Name="Button0" WidthRequest="100" TextColor="Red" 
                     HeightRequest="100" 
                     Grid.Row="0" 
                     Grid.Column="0" />
