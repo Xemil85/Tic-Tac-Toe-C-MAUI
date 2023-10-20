@@ -29,39 +29,47 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Button0" WidthRequest="100" TextColor="Red" 
+            <Button x:Name="Button0" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="0" 
                     Grid.Column="0" />
-            <Button x:Name="Button1" WidthRequest="100" 
+            <Button x:Name="Button1" WidthRequest="100" FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="0" 
                     Grid.Column="1" />
             <Button x:Name="Button2" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="0" 
                     Grid.Column="2" />
             <Button x:Name="Button3" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="1" 
                     Grid.Column="0"/>
             <Button x:Name="Button4" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="1" 
                     Grid.Column="1" />
-            <Button x:Name="Button5" WidthRequest="100" 
+            <Button x:Name="Button5" WidthRequest="100"
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="1" 
                     Grid.Column="2" />
             <Button x:Name="Button6" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="2" 
                     Grid.Column="0"/>
             <Button x:Name="Button7" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="2" 
                     Grid.Column="1" />
             <Button x:Name="Button8" WidthRequest="100" 
+                    FontSize="20"
                     HeightRequest="100" 
                     Grid.Row="2" 
                     Grid.Column="2" />
@@ -71,7 +79,18 @@
                FontSize="20" 
                HorizontalOptions="Center" />
 
-        <Button x:Name="UusiPeli" Text="Uusi peli" WidthRequest="100" />
+        <Grid HorizontalOptions="Center" ColumnSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="Pelaaja1Pisteet" Text="0" FontSize="30" Grid.Column="0" />
+            <Label Text="-" FontSize="30" Grid.Column="1" />
+            <Label x:Name="Pelaaja2Pisteet" Text="0" FontSize="30" Grid.Column="2" />
+            
+            
+        </Grid>
 
 
     </VerticalStackLayout>

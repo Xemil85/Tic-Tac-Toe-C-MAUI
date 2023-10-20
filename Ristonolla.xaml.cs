@@ -6,13 +6,15 @@ namespace final_work;
 public partial class Ristinolla : ContentPage
 {
 
+    private Pelaaja pelaaja1;
+    private Pelaaja pelaaja2;
     private bool pelaaja1Vuoro = true;
     private List<Button> buttons;
     private string[] board;
-    private Pelaaja pelaaja1;
-    private Pelaaja pelaaja2;
+    private DateTime pelinAlkuaika;
+    int pisteet = 0;
 
-    
+    [Obsolete]
     public Ristinolla(Pelaaja pelaaja1, Pelaaja pelaaja2)
     {
         InitializeComponent();
@@ -28,6 +30,15 @@ public partial class Ristinolla : ContentPage
         }
 
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
+
+        pelinAlkuaika = DateTime.Now;
+
+        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+        {
+            TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
+            Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
+            return true;
+        });
     }
 
     private void OnButtonClick(object sender, EventArgs e)
@@ -55,11 +66,15 @@ public partial class Ristinolla : ContentPage
             if (CheckForWin("X"))
             {
                 DisplayAlert("Peli päättyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti!", "OK");
+                pisteet = int.Parse(Pelaaja1Pisteet.Text);
+                Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
                 ResetGame();
             }
             else if (CheckForWin("O"))
             {
                 DisplayAlert("Peli päättyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti!", "OK");
+                pisteet = int.Parse(Pelaaja2Pisteet.Text);
+                Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
                 ResetGame();
             }
             else if (board.All(cell => cell != null))
@@ -108,6 +123,7 @@ public partial class Ristinolla : ContentPage
 
         pelaaja1Vuoro = true;
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
+        pelinAlkuaika = DateTime.Now;
     }
 
 
