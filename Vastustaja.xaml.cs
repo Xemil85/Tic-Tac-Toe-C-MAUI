@@ -63,6 +63,6 @@ public partial class Vastustaja : ContentPage
 
     private async void ToinenPelaaja_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Entinenpelaaja());
+        await Navigation.PushAsync(new ToinenPelaaja(pelaaja));
     }
 }
