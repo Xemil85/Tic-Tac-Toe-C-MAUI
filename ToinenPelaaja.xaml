@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="final_work.ToinenPelaaja"
+             Title="Toinen pelaaja">
+    <VerticalStackLayout>
+        <Label Text="Valitse pelaaja" 
+           FontSize="30"
+           Padding="30"
+           HorizontalOptions="Center" />
+        <ListView x:Name="PelaajatListView" ItemsSource="{Binding Pelaajat}" HorizontalScrollBarVisibility="Always">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid RowSpacing="10" Padding="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Etunimi}" FontSize="20" Grid.Column="0" />
+                            <Label Text="{Binding Sukunimi}" FontSize="20" Grid.Column="1" />
+                            <Label Text="{Binding Syntymavuosi}" FontSize="20" Grid.Column="2" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button x:Name="ValitseToinenPelaaja" Text="Valitse pelaaja" WidthRequest="150" />
+    </VerticalStackLayout>
+</ContentPage>
