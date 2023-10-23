@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Timers;
 
 namespace final_work;
@@ -12,7 +14,9 @@ public partial class Ristinolla : ContentPage
     private List<Button> buttons;
     private string[] board;
     private DateTime pelinAlkuaika;
+    private double pelienYhteiskesto = 0.0;
     int pisteet = 0;
+
 
     [Obsolete]
     public Ristinolla(Pelaaja pelaaja1, Pelaaja pelaaja2)
@@ -37,6 +41,8 @@ public partial class Ristinolla : ContentPage
         {
             TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
             Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
+
+            pelienYhteiskesto += kulunutAika.TotalSeconds;
             return true;
         });
     }
@@ -46,41 +52,77 @@ public partial class Ristinolla : ContentPage
         var button = (Button)sender;
         int index = buttons.IndexOf(button);
 
-        if (board[index] == null)
+        string projectDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+        string fileName = "Pelaajat.json";
+        string filePath = Path.Combine(projectDirectory, fileName);
+
+        JsonSerializerOptions options = new JsonSerializerOptions
         {
-            if (pelaaja1Vuoro)
-            {
-                PelaajaVuoro.Text = $"Pelaajan {pelaaja2.Etunimi} {pelaaja2.Sukunimi} vuoro";
-                button.Text = "X";
-                board[index] = "X";
-            }
-            else
-            {
-                PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
-                button.Text = "O";
-                board[index] = "O";
-            }
+            WriteIndented = true
+        };
 
-            pelaaja1Vuoro = !pelaaja1Vuoro;
+        if (File.Exists(filePath))
+        {
 
-            if (CheckForWin("X"))
+            if (board[index] == null)
             {
-                DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti!", "OK");
-                pisteet = int.Parse(Pelaaja1Pisteet.Text);
-                Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
-                ResetGame();
-            }
-            else if (CheckForWin("O"))
-            {
-                DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti!", "OK");
-                pisteet = int.Parse(Pelaaja2Pisteet.Text);
-                Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
-                ResetGame();
-            }
-            else if (board.All(cell => cell != null))
-            {
-                DisplayAlert("Peli p‰‰ttyi", "Tasapeli!", "OK");
-                ResetGame();
+                string jsonData = File.ReadAllText(filePath);
+                ObservableCollection<Pelaaja> pelaajat = JsonSerializer.Deserialize<ObservableCollection<Pelaaja>>(jsonData);
+
+                // Etsi ja p‰ivit‰ pelaajien tiedot
+                var pelaaja1ToUpdate = pelaajat.FirstOrDefault(p => p.Etunimi == pelaaja1.Etunimi && p.Sukunimi == pelaaja1.Sukunimi);
+                var pelaaja2ToUpdate = pelaajat.FirstOrDefault(p => p.Etunimi == pelaaja2.Etunimi && p.Sukunimi == pelaaja2.Sukunimi);
+
+                if (pelaaja1Vuoro)
+                {
+                    PelaajaVuoro.Text = $"Pelaajan {pelaaja2.Etunimi} {pelaaja2.Sukunimi} vuoro";
+                    button.Text = "X";
+                    board[index] = "X";
+                }
+                else
+                {
+                    PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
+                    button.Text = "O";
+                    board[index] = "O";
+                }
+
+                pelaaja1Vuoro = !pelaaja1Vuoro;
+
+                if (CheckForWin("X"))
+                {
+                    DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti!", "OK");
+                    pisteet = int.Parse(Pelaaja1Pisteet.Text);
+                    Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
+                    pelaaja1ToUpdate.Voitot++;
+                    pelaaja2ToUpdate.Tappiot++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    ResetGame();
+                }
+                else if (CheckForWin("O"))
+                {
+                    DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti!", "OK");
+                    pisteet = int.Parse(Pelaaja2Pisteet.Text);
+                    Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
+                    pelaaja2ToUpdate.Voitot++;
+                    pelaaja1ToUpdate.Tappiot++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    ResetGame();
+                }
+                else if (board.All(cell => cell != null))
+                {
+                    DisplayAlert("Peli p‰‰ttyi", "Tasapeli!", "OK");
+                    pelaaja1ToUpdate.Tasapelit++;
+                    pelaaja2ToUpdate.Tasapelit++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    ResetGame();
+                }
+
+                // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
+                string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
+                File.WriteAllText(filePath, updatedJsonData);
             }
         }
     }
@@ -123,6 +165,7 @@ public partial class Ristinolla : ContentPage
 
         pelaaja1Vuoro = true;
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
+        pelienYhteiskesto = 0.0;
         pelinAlkuaika = DateTime.Now;
     }
 
