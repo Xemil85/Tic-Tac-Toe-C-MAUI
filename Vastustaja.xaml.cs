@@ -13,7 +13,7 @@ public partial class Vastustaja : ContentPage
         ToinenPelaaja.Clicked += ToinenPelaaja_Clicked;
 	}
 
-    private void Tietokone_Clicked(object sender, EventArgs e)
+    private async void Tietokone_Clicked(object sender, EventArgs e)
     {
         string projectDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         string fileName = "Pelaajat.json";
@@ -32,7 +32,7 @@ public partial class Vastustaja : ContentPage
                 // Löytyi tietokonepelaaja, voit käyttää sitä vastustajana
                 // Luo ristinolla-näkymä ja siirry siihen antaen pelaajatiedot
                 Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonePelaaja);
-                Navigation.PushAsync(ristinollaPage);
+                await Navigation.PushAsync(ristinollaPage);
             }
             else
             {
@@ -49,9 +49,22 @@ public partial class Vastustaja : ContentPage
                     PelienYhteiskesto = 0
                 };
 
+                pelaajat.Add(tietokonepelaaja);
+                string updatedData = JsonSerializer.Serialize(pelaajat);
+
+                try
+                {
+                    System.IO.File.WriteAllText(filePath, updatedData);
+                }
+                catch (Exception ex)
+                {
+                    // Näytä virheilmoitus
+                    await DisplayAlert("Virhe tallennuksessa", ex.Message, "OK");
+                }
+
                 // Luo ristinolla-näkymä ja siirry siihen antaen pelaajatiedot
                 Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonepelaaja);
-                Navigation.PushAsync(ristinollaPage);
+                await Navigation.PushAsync(ristinollaPage);
             }
         }
         else
