@@ -17,13 +17,17 @@ public partial class Ristinolla : ContentPage
     private double pelienYhteiskesto = 0.0;
     int pisteet = 0;
 
+    private bool tietokoneVastustaja = false;
+    private int vuoronNumero = 0;
+    private bool aloitusSiirtoTehty = false;
 
     [Obsolete]
-    public Ristinolla(Pelaaja pelaaja1, Pelaaja pelaaja2)
+    public Ristinolla(Pelaaja pelaaja1, Pelaaja pelaaja2, bool tietokoneVastustaja)
     {
         InitializeComponent();
         this.pelaaja1 = pelaaja1;
         this.pelaaja2 = pelaaja2;
+        this.tietokoneVastustaja = tietokoneVastustaja;
 
         buttons = new List<Button> { Button0, Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8 };
         board = new string[9];
@@ -45,6 +49,55 @@ public partial class Ristinolla : ContentPage
             pelienYhteiskesto += kulunutAika.TotalSeconds;
             return true;
         });
+
+        if (tietokoneVastustaja)
+        {
+            AloitaTekoalynSiirrot();
+        }
+    }
+
+    [Obsolete]
+    private void AloitaTekoalynSiirrot()
+    {
+        if (!aloitusSiirtoTehty)
+        {
+            // Tässä vaiheessa voit aktivoida timerin, kun pelaaja aloittaa
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            {
+                if (vuoronNumero == 1) // Tekoälyn vuoro
+                {
+                    tietokoneSiirto();
+                }
+                vuoronNumero = (vuoronNumero + 1) % 3; // Siirtyy seuraavaan vuoroon (0, 1, 2)
+                return true;
+            });
+            aloitusSiirtoTehty = true; // Aseta aloitus siirto tehty -tila todeksi
+        }
+
+    }
+
+    private void tietokoneSiirto()
+    {
+        if (!pelaaja1Vuoro || !tietokoneVastustaja)
+        {
+            return;
+        }
+
+        List<int> vapaaIndeksit = new List<int>();
+        for (int i = 0; i < board.Length; i++)
+        {
+            if (board[i] == null)
+            {
+                vapaaIndeksit.Add(i);
+            }
+        }
+
+        if (vapaaIndeksit.Count > 0)
+        {
+            Random random = new Random();
+            int valittuIndeksi = vapaaIndeksit[random.Next(0, vapaaIndeksit.Count)];
+            OnButtonClick(buttons[valittuIndeksi], EventArgs.Empty);
+        }
     }
 
     private void OnButtonClick(object sender, EventArgs e)
@@ -134,7 +187,7 @@ public partial class Ristinolla : ContentPage
         "012", "345", "678", // Vaakasuorat
         "036", "147", "258", // Pystysuorat
         "048", "246" // Vinottaiset
-    };
+        };
 
         foreach (var line in lines)
         {
