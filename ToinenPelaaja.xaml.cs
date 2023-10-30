@@ -7,6 +7,8 @@ public partial class ToinenPelaaja : ContentPage
 {
     public ObservableCollection<Pelaaja> Pelaajat { get; set; }
     private Pelaaja pelaaja;
+
+    [Obsolete]
     public ToinenPelaaja(Pelaaja pelaaja)
 	{
 		InitializeComponent();
@@ -17,13 +19,14 @@ public partial class ToinenPelaaja : ContentPage
         ValitseToinenPelaaja.Clicked += ValitseToinenPelaaja_Clicked;
     }
 
+    [Obsolete]
     private async void ValitseToinenPelaaja_Clicked(object sender, EventArgs e)
     {
         var selectedPelaaja = (Pelaaja)PelaajatListView.SelectedItem;
 
         if (selectedPelaaja != null)
         {
-            Ristinolla ristinollaPage = new Ristinolla(pelaaja, selectedPelaaja);
+            Ristinolla ristinollaPage = new Ristinolla(pelaaja, selectedPelaaja, false);
             await Navigation.PushAsync(ristinollaPage);
         }
     }

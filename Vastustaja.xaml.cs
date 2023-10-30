@@ -5,6 +5,8 @@ namespace final_work;
 public partial class Vastustaja : ContentPage
 {
     private Pelaaja pelaaja;
+
+    [Obsolete]
     public Vastustaja(Pelaaja pelaaja)
 	{
 		InitializeComponent();
@@ -13,6 +15,7 @@ public partial class Vastustaja : ContentPage
         ToinenPelaaja.Clicked += ToinenPelaaja_Clicked;
 	}
 
+    [Obsolete]
     private async void Tietokone_Clicked(object sender, EventArgs e)
     {
         string projectDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -31,7 +34,7 @@ public partial class Vastustaja : ContentPage
             {
                 // Löytyi tietokonepelaaja, voit käyttää sitä vastustajana
                 // Luo ristinolla-näkymä ja siirry siihen antaen pelaajatiedot
-                Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonePelaaja);
+                Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonePelaaja, true);
                 await Navigation.PushAsync(ristinollaPage);
             }
             else
@@ -63,7 +66,7 @@ public partial class Vastustaja : ContentPage
                 }
 
                 // Luo ristinolla-näkymä ja siirry siihen antaen pelaajatiedot
-                Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonepelaaja);
+                Ristinolla ristinollaPage = new Ristinolla(pelaaja, tietokonepelaaja, true);
                 await Navigation.PushAsync(ristinollaPage);
             }
         }
@@ -74,6 +77,7 @@ public partial class Vastustaja : ContentPage
         }
     }
 
+    [Obsolete]
     private async void ToinenPelaaja_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new ToinenPelaaja(pelaaja));
