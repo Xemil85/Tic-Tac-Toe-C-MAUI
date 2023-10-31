@@ -7,18 +7,18 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-        UusiPelaaja.Clicked += UusiPelaaja_Clicked;
-        EntinenPelaaja.Clicked += EntinenPelaaja_Clicked;
+        AloitaPeli.Clicked += AloitaPeli_Clicked;
+        LopetaPeli.Clicked += LopetaPeli_Clicked;
 	}
 
-    private async void EntinenPelaaja_Clicked(object sender, EventArgs e)
+    private void LopetaPeli_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Entinenpelaaja());
+        System.Environment.Exit(0);
     }
 
-    private async void UusiPelaaja_Clicked(object sender, EventArgs e)
+    private async void AloitaPeli_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new UusiPelaaja());
+        await Navigation.PushAsync(new ValitsePelaaja());
     }
 }
 

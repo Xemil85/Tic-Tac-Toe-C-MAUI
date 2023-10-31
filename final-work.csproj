@@ -56,6 +56,9 @@
 	  <Compile Update="Entinenpelaaja.xaml.cs">
 	    <DependentUpon>Entinenpelaaja.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="ValitsePelaaja.xaml.cs">
+	    <DependentUpon>ValitsePelaaja.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="ToinenPelaaja.xaml.cs">
 	    <DependentUpon>ToinenPelaaja.xaml</DependentUpon>
 	  </Compile>
@@ -72,6 +75,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Entinenpelaaja.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ValitsePelaaja.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ToinenPelaaja.xaml">
