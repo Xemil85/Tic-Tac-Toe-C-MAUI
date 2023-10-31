@@ -18,8 +18,6 @@ public partial class Ristinolla : ContentPage
     int pisteet = 0;
 
     private bool tietokoneVastustaja = false;
-    private int vuoronNumero = 0;
-    private bool aloitusSiirtoTehty = false;
 
     [Obsolete]
     public Ristinolla(Pelaaja pelaaja1, Pelaaja pelaaja2, bool tietokoneVastustaja)
@@ -49,39 +47,14 @@ public partial class Ristinolla : ContentPage
             pelienYhteiskesto += kulunutAika.TotalSeconds;
             return true;
         });
-
-        if (tietokoneVastustaja)
-        {
-            AloitaTekoalynSiirrot();
-        }
     }
 
     [Obsolete]
-    private void AloitaTekoalynSiirrot()
+    private async void tietokoneSiirto()
     {
-        if (!aloitusSiirtoTehty)
-        {
-            // Tässä vaiheessa voit aktivoida timerin, kun pelaaja aloittaa
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-            {
-                if (vuoronNumero == 1) // Tekoälyn vuoro
-                {
-                    tietokoneSiirto();
-                }
-                vuoronNumero = (vuoronNumero + 1) % 3; // Siirtyy seuraavaan vuoroon (0, 1, 2)
-                return true;
-            });
-            aloitusSiirtoTehty = true; // Aseta aloitus siirto tehty -tila todeksi
-        }
-
-    }
-
-    private void tietokoneSiirto()
-    {
-        if (!pelaaja1Vuoro || !tietokoneVastustaja)
-        {
-            return;
-        }
+        Random random = new Random();
+        int delaySeconds = random.Next(500, 2001);
+        await Task.Delay(delaySeconds);
 
         List<int> vapaaIndeksit = new List<int>();
         for (int i = 0; i < board.Length; i++)
@@ -94,7 +67,6 @@ public partial class Ristinolla : ContentPage
 
         if (vapaaIndeksit.Count > 0)
         {
-            Random random = new Random();
             int valittuIndeksi = vapaaIndeksit[random.Next(0, vapaaIndeksit.Count)];
             OnButtonClick(buttons[valittuIndeksi], EventArgs.Empty);
         }
@@ -176,6 +148,11 @@ public partial class Ristinolla : ContentPage
                 // Kirjoita päivitetyt tiedot takaisin JSON-tiedostoon
                 string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
                 File.WriteAllText(filePath, updatedJsonData);
+
+                if (tietokoneVastustaja && !pelaaja1Vuoro)
+                {
+                    tietokoneSiirto();
+                }
             }
         }
     }
