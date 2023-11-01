@@ -16,6 +16,7 @@
                 HorizontalOptions="Center" />
 
             <Button x:Name="AloitaPeli" Text="Aloita peli" WidthRequest="150"/>
+            <Button x:Name="Tilasto" Text="Tilastot" WidthRequest="150" />
             <Button x:Name="LopetaPeli" Text="Lopeta peli" WidthRequest="150"/>
 
         </VerticalStackLayout>

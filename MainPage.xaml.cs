@@ -8,8 +8,14 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 
         AloitaPeli.Clicked += AloitaPeli_Clicked;
+        Tilasto.Clicked += Tilasto_Clicked;
         LopetaPeli.Clicked += LopetaPeli_Clicked;
 	}
+
+    private async void Tilasto_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new Tilasto());
+    }
 
     private void LopetaPeli_Clicked(object sender, EventArgs e)
     {
