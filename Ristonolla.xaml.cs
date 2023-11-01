@@ -138,8 +138,14 @@ public partial class Ristinolla : ContentPage
                     }
                     else
                     {
-                        // Lopeta peli
-                        
+                        pisteet = int.Parse(Pelaaja1Pisteet.Text);
+                        Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
+                        pelaaja1ToUpdate.Voitot++;
+                        pelaaja2ToUpdate.Tappiot++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                        await Navigation.PushAsync(new MainPage());
                     }
 
                 }
@@ -160,8 +166,15 @@ public partial class Ristinolla : ContentPage
                     }
                     else
                     {
-                        // Lopeta peli
-                       
+                        // Lopeta peli ja mene takaisin aloitusruutuun
+                        pisteet = int.Parse(Pelaaja2Pisteet.Text);
+                        Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
+                        pelaaja2ToUpdate.Voitot++;
+                        pelaaja1ToUpdate.Tappiot++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                        await Navigation.PushAsync(new MainPage());
                     }
                 }
                 else if (board.All(cell => cell != null))
@@ -180,7 +193,12 @@ public partial class Ristinolla : ContentPage
                     else
                     {
                         // Lopeta peli
-                        
+                        pelaaja1ToUpdate.Tasapelit++;
+                        pelaaja2ToUpdate.Tasapelit++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                        await Navigation.PushAsync(new MainPage());
                     }
 
                 }
