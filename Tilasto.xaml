@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="final_work.Tilasto"
+             Title="Pelaajien tilastot">
+    <VerticalStackLayout Padding="30">
+
+        <Grid RowSpacing="10" Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Etunimi" FontSize="20" Grid.Column="0" />
+            <Label Text="Sukunimi" FontSize="20" Grid.Column="1" />
+            <Label Text="Syntymavuosi" FontSize="20" Grid.Column="2" />
+            <Label Text="Voitot" FontSize="20" Grid.Column="3" />
+            <Label Text="Tappiot" FontSize="20" Grid.Column="4" />
+            <Label Text="Tasapelit" FontSize="20" Grid.Column="5" />
+            <Label Text="PelienYhteiskesto" FontSize="20" Grid.Column="6" />
+        </Grid>
+
+        <ListView ItemsSource="{Binding Pelaajat}" HorizontalScrollBarVisibility="Always">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid RowSpacing="10" Padding="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Etunimi}" FontSize="15" Grid.Column="0" />
+                            <Label Text="{Binding Sukunimi}" FontSize="15" Grid.Column="1" />
+                            <Label Text="{Binding Syntymavuosi}" FontSize="15" Grid.Column="2" />
+                            <Label Text="{Binding Voitot}" FontSize="15" Grid.Column="3" />
+                            <Label Text="{Binding Tappiot}" FontSize="15" Grid.Column="4" />
+                            <Label Text="{Binding Tasapelit}" FontSize="15" Grid.Column="5" />
+                            <Label Text="{Binding PelienYhteiskesto}" FontSize="15" Grid.Column="6" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>
