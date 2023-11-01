@@ -14,7 +14,8 @@ public partial class Ristinolla : ContentPage
     private List<Button> buttons;
     private string[] board;
     private DateTime pelinAlkuaika;
-    private double pelienYhteiskesto = 0.0;
+    private double pelienYhteiskesto = 0;
+    private bool peliJatkuu = false;
     int pisteet = 0;
 
     private bool tietokoneVastustaja = false;
@@ -41,10 +42,14 @@ public partial class Ristinolla : ContentPage
 
         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
         {
-            TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
-            Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
+            if (peliJatkuu)
+            {
+                TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
+                Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
 
-            pelienYhteiskesto += kulunutAika.TotalSeconds;
+                int kulunutSekunnit = (int)Math.Floor(kulunutAika.TotalSeconds);
+                pelienYhteiskesto += kulunutSekunnit;
+            }
             return true;
         });
     }
@@ -72,8 +77,11 @@ public partial class Ristinolla : ContentPage
         }
     }
 
-    private void OnButtonClick(object sender, EventArgs e)
+    [Obsolete]
+    private async void OnButtonClick(object sender, EventArgs e)
     {
+        peliJatkuu = true;
+
         var button = (Button)sender;
         int index = buttons.IndexOf(button);
 
@@ -115,34 +123,66 @@ public partial class Ristinolla : ContentPage
 
                 if (CheckForWin("X"))
                 {
-                    DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti!", "OK");
-                    pisteet = int.Parse(Pelaaja1Pisteet.Text);
-                    Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
-                    pelaaja1ToUpdate.Voitot++;
-                    pelaaja2ToUpdate.Tappiot++;
-                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    ResetGame();
+                    peliJatkuu = false;
+                    bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
+                    if (continueGame)
+                    {
+                        // Jatka peli‰
+                        pisteet = int.Parse(Pelaaja1Pisteet.Text);
+                        Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
+                        pelaaja1ToUpdate.Voitot++;
+                        pelaaja2ToUpdate.Tappiot++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                    }
+                    else
+                    {
+                        // Lopeta peli
+                        
+                    }
+
                 }
                 else if (CheckForWin("O"))
                 {
-                    DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti!", "OK");
-                    pisteet = int.Parse(Pelaaja2Pisteet.Text);
-                    Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
-                    pelaaja2ToUpdate.Voitot++;
-                    pelaaja1ToUpdate.Tappiot++;
-                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    ResetGame();
+                    peliJatkuu = false;
+                    bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
+                    if (continueGame)
+                    {
+                        // Jatka peli‰
+                        pisteet = int.Parse(Pelaaja2Pisteet.Text);
+                        Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
+                        pelaaja2ToUpdate.Voitot++;
+                        pelaaja1ToUpdate.Tappiot++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                    }
+                    else
+                    {
+                        // Lopeta peli
+                       
+                    }
                 }
                 else if (board.All(cell => cell != null))
                 {
-                    DisplayAlert("Peli p‰‰ttyi", "Tasapeli!", "OK");
-                    pelaaja1ToUpdate.Tasapelit++;
-                    pelaaja2ToUpdate.Tasapelit++;
-                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                    ResetGame();
+                    peliJatkuu = false;
+                    bool continueGame = await DisplayAlert("Peli p‰‰ttyi", "Tasapeli! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
+                    if (continueGame)
+                    {
+                        // Jatka peli‰
+                        pelaaja1ToUpdate.Tasapelit++;
+                        pelaaja2ToUpdate.Tasapelit++;
+                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        ResetGame();
+                    }
+                    else
+                    {
+                        // Lopeta peli
+                        
+                    }
+
                 }
 
                 // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
@@ -195,7 +235,7 @@ public partial class Ristinolla : ContentPage
 
         pelaaja1Vuoro = true;
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
-        pelienYhteiskesto = 0.0;
+        pelienYhteiskesto = 0;
         pelinAlkuaika = DateTime.Now;
     }
 
