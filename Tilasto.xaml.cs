@@ -27,6 +27,7 @@ public partial class Tilasto : ContentPage
             pelaajat = new ObservableCollection<Pelaaja>(pelaajat.Where(p => p.Etunimi != "Tietokone"));
             Pelaajat = pelaajat;
             OnPropertyChanged(nameof(Pelaajat));
+   
         }
     }
 }
