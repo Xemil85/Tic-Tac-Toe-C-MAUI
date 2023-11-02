@@ -123,27 +123,22 @@ public partial class Ristinolla : ContentPage
 
                 if (CheckForWin("X"))
                 {
+                    pisteet = int.Parse(Pelaaja1Pisteet.Text);
+                    Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
+                    pelaaja1ToUpdate.Voitot++;
+                    pelaaja2ToUpdate.Tappiot++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
                         // Jatka peli‰
-                        pisteet = int.Parse(Pelaaja1Pisteet.Text);
-                        Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
-                        pelaaja1ToUpdate.Voitot++;
-                        pelaaja2ToUpdate.Tappiot++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                         ResetGame();
                     }
                     else
                     {
-                        pisteet = int.Parse(Pelaaja1Pisteet.Text);
-                        Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
-                        pelaaja1ToUpdate.Voitot++;
-                        pelaaja2ToUpdate.Tappiot++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        // Lopettaa pelin ja menn‰‰n takaisin aloitusruutuun
                         ResetGame();
                         await Navigation.PushAsync(new MainPage());
                     }
@@ -151,52 +146,42 @@ public partial class Ristinolla : ContentPage
                 }
                 else if (CheckForWin("O"))
                 {
+                    pisteet = int.Parse(Pelaaja2Pisteet.Text);
+                    Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
+                    pelaaja2ToUpdate.Voitot++;
+                    pelaaja1ToUpdate.Tappiot++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
                         // Jatka peli‰
-                        pisteet = int.Parse(Pelaaja2Pisteet.Text);
-                        Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
-                        pelaaja2ToUpdate.Voitot++;
-                        pelaaja1ToUpdate.Tappiot++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                         ResetGame();
                     }
                     else
                     {
-                        // Lopeta peli ja mene takaisin aloitusruutuun
-                        pisteet = int.Parse(Pelaaja2Pisteet.Text);
-                        Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
-                        pelaaja2ToUpdate.Voitot++;
-                        pelaaja1ToUpdate.Tappiot++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        // Lopeta peli ja menn‰‰n takaisin aloitusruutuun
                         ResetGame();
                         await Navigation.PushAsync(new MainPage());
                     }
                 }
                 else if (board.All(cell => cell != null))
                 {
+                    pelaaja1ToUpdate.Tasapelit++;
+                    pelaaja2ToUpdate.Tasapelit++;
+                    pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                    pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", "Tasapeli! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
                         // Jatka peli‰
-                        pelaaja1ToUpdate.Tasapelit++;
-                        pelaaja2ToUpdate.Tasapelit++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                         ResetGame();
                     }
                     else
                     {
-                        // Lopeta peli
-                        pelaaja1ToUpdate.Tasapelit++;
-                        pelaaja2ToUpdate.Tasapelit++;
-                        pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
-                        pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
+                        // Lopeta peli ja menn‰‰n takaisin alkuruutuun
                         ResetGame();
                         await Navigation.PushAsync(new MainPage());
                     }
