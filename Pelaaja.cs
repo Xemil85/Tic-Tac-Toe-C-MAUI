@@ -15,5 +15,15 @@ namespace final_work
         public int Tappiot { get; set; }
         public int Tasapelit { get; set; }
         public double PelienYhteiskesto { get; set; }
+        public string PelienYhteiskestoMuoto
+        {
+            get
+            {
+                int pelienYhteiskestoSekunneissa = (int)Math.Floor(PelienYhteiskesto);
+                int minuutit = pelienYhteiskestoSekunneissa / 60;
+                int sekunnit = pelienYhteiskestoSekunneissa % 60;
+                return $"{minuutit} min {sekunnit} s";
+            }
+        }
     }
 }
