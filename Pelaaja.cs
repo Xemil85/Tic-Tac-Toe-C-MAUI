@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace final_work
 {
+    // Luokka pelaaja tietoja varten
     public class Pelaaja
     {
         public string Etunimi { get; set; }

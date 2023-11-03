@@ -39,8 +39,7 @@ public partial class Vastustaja : ContentPage
             }
             else
             {
-                // Tietokonepelaajaa ei löytynyt, voit käsitellä tätä tilannetta tarpeidesi mukaan
-                // Esim. luoda uusi tietokonepelaaja ja lisätä se pelaajien listaan ja tallentaa JSON-tiedostoon
+                // Tietokonepelaajaa ei löytynyt luoda uusi tietokonepelaaja ja lisätä se pelaajien listaan ja tallentaa JSON-tiedostoon
                 Pelaaja tietokonepelaaja = new Pelaaja
                 {
                     Etunimi = "Tietokone",
@@ -70,13 +69,9 @@ public partial class Vastustaja : ContentPage
                 await Navigation.PushAsync(ristinollaPage);
             }
         }
-        else
-        {
-            // Tiedostoa ei ole olemassa, voit käsitellä tätä tilannetta tarpeidesi mukaan
-            // Esim. luoda tiedosto ja lisätä tietokonepelaajan
-        }
     }
 
+    // Funktio joka mahdollistaa toimivuuden toinen pelaajan valitsemisen näkymään
     [Obsolete]
     private async void ToinenPelaaja_Clicked(object sender, EventArgs e)
     {

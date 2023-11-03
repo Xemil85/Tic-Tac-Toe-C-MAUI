@@ -10,7 +10,6 @@ public partial class UusiPelaaja : ContentPage
     public UusiPelaaja()
 	{
 		InitializeComponent();
-
         TallennaPelaaja.Clicked += TallennaPelaaja_Clicked;
 	}
 
@@ -81,6 +80,7 @@ public partial class UusiPelaaja : ContentPage
         Sukunimi.Text = string.Empty;
         Syntymavuosi.Text = string.Empty;
 
+        // L‰het‰ uuden pelaajan tiedot ja menee vastustaja n‰kym‰‰n.
         Vastustaja vastustaja = new Vastustaja(pelaaja);
         await Navigation.PushAsync(vastustaja);
     }

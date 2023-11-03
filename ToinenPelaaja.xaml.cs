@@ -19,6 +19,7 @@ public partial class ToinenPelaaja : ContentPage
         ValitseToinenPelaaja.Clicked += ValitseToinenPelaaja_Clicked;
     }
 
+    // Funktio jossa menn‰‰n valitaan listviewist‰ pelaaja ja sitten painetaan valitse pelaaja nappia, joka hypp‰‰ ristinolla n‰kym‰‰n.
     [Obsolete]
     private async void ValitseToinenPelaaja_Clicked(object sender, EventArgs e)
     {
@@ -31,6 +32,7 @@ public partial class ToinenPelaaja : ContentPage
         }
     }
 
+    // Funktio joka etsii Pelaajat.json tiedostosta pelaajien datan ja huomioi ett‰ tietokone pelaajaa ei oteta mukaan siihen.
     private void LoadPelaajat()
     {
         string projectDirectory = System.AppDomain.CurrentDomain.BaseDirectory;

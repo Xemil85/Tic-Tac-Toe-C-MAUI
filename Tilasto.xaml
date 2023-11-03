@@ -4,7 +4,6 @@
              x:Class="final_work.Tilasto"
              Title="Pelaajien tilastot">
     <VerticalStackLayout Padding="30">
-
         <Grid RowSpacing="10" Padding="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
