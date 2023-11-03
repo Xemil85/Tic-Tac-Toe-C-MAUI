@@ -24,7 +24,6 @@ public partial class Tilasto : ContentPage
         {
             string jsonData = System.IO.File.ReadAllText(filePath);
             ObservableCollection<Pelaaja> pelaajat = JsonSerializer.Deserialize<ObservableCollection<Pelaaja>>(jsonData);
-            pelaajat = new ObservableCollection<Pelaaja>(pelaajat.Where(p => p.Etunimi != "Tietokone"));
             Pelaajat = pelaajat;
             OnPropertyChanged(nameof(Pelaajat));
    

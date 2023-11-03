@@ -23,7 +23,7 @@
             <Label Text="PelienYhteiskesto" FontSize="20" Grid.Column="6" TextDecorations="Underline" />
         </Grid>
 
-        <ListView ItemsSource="{Binding Pelaajat}" HeightRequest="300">
+        <ListView ItemsSource="{Binding Pelaajat}" HeightRequest="500">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
