@@ -8,7 +8,7 @@
            FontSize="30"
            Padding="30"
            HorizontalOptions="Center" />
-        <ListView x:Name="PelaajatListView" ItemsSource="{Binding Pelaajat}" HorizontalScrollBarVisibility="Always">
+        <ListView x:Name="PelaajatListView" ItemsSource="{Binding Pelaajat}" HeightRequest="300">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
