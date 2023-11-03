@@ -7,7 +7,7 @@ namespace final_work;
 
 public partial class Ristinolla : ContentPage
 {
-
+    // Tarvittavat muuttujat ristinolla peli‰ varten.
     private Pelaaja pelaaja1;
     private Pelaaja pelaaja2;
     private bool pelaaja1Vuoro = true;
@@ -47,20 +47,22 @@ public partial class Ristinolla : ContentPage
                 TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
                 Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
 
-                int kulunutSekunnit = (int)Math.Floor(kulunutAika.TotalSeconds);
-                pelienYhteiskesto += kulunutSekunnit;
+                pelienYhteiskesto = kulunutAika.TotalSeconds;
             }
             return true;
         });
     }
 
+    // Funktio tietokone vastustajan toimivuus
     [Obsolete]
     private async void tietokoneSiirto()
     {
+        // Tietokone tekee siirron 0.5-2s sis‰ll‰
         Random random = new Random();
         int delaySeconds = random.Next(500, 2001);
         await Task.Delay(delaySeconds);
 
+        // Tarkistaa mitk‰ napeista on valmiina.
         List<int> vapaaIndeksit = new List<int>();
         for (int i = 0; i < board.Length; i++)
         {
@@ -70,6 +72,7 @@ public partial class Ristinolla : ContentPage
             }
         }
 
+        // Valitsee vapaan napin ja tulee siihen ristinollan arvo.
         if (vapaaIndeksit.Count > 0)
         {
             int valittuIndeksi = vapaaIndeksit[random.Next(0, vapaaIndeksit.Count)];
@@ -77,6 +80,7 @@ public partial class Ristinolla : ContentPage
         }
     }
 
+    // Funktio, joka mahdollistaa nappien painalluksen ja ristinolla pelin etenemisen.
     [Obsolete]
     private async void OnButtonClick(object sender, EventArgs e)
     {
@@ -130,6 +134,9 @@ public partial class Ristinolla : ContentPage
                     pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
+                    // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
+                    string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
+                    File.WriteAllText(filePath, updatedJsonData);
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja1.Etunimi} {pelaaja1.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
@@ -153,6 +160,9 @@ public partial class Ristinolla : ContentPage
                     pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
+                    // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
+                    string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
+                    File.WriteAllText(filePath, updatedJsonData);
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {pelaaja2.Etunimi} {pelaaja2.Sukunimi} voitti! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
@@ -173,6 +183,9 @@ public partial class Ristinolla : ContentPage
                     pelaaja1ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     pelaaja2ToUpdate.PelienYhteiskesto += pelienYhteiskesto;
                     peliJatkuu = false;
+                    // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
+                    string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
+                    File.WriteAllText(filePath, updatedJsonData);
                     bool continueGame = await DisplayAlert("Peli p‰‰ttyi", "Tasapeli! Haluatko pelata uudestaan?", "Kyll‰", "Lopeta");
                     if (continueGame)
                     {
@@ -187,10 +200,6 @@ public partial class Ristinolla : ContentPage
                     }
 
                 }
-
-                // Kirjoita p‰ivitetyt tiedot takaisin JSON-tiedostoon
-                string updatedJsonData = JsonSerializer.Serialize(pelaajat, options);
-                File.WriteAllText(filePath, updatedJsonData);
 
                 if (tietokoneVastustaja && !pelaaja1Vuoro)
                 {
@@ -224,6 +233,7 @@ public partial class Ristinolla : ContentPage
         return false;
     }
 
+    // Funktio joka aloittaa peli alusta, jossa napit alustetaan ja peli alkaa alusta.
     private void ResetGame()
     {
         foreach (var button in buttons)
