@@ -81,7 +81,6 @@ public partial class Ristinolla : ContentPage
                 Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
 
                 pelienYhteiskesto = kulunutAika.TotalSeconds;
-                Debug.WriteLine($"Pelien yhteiskesto on {pelienYhteiskesto}");
             }
             return true;
         });
@@ -264,6 +263,7 @@ public partial class Ristinolla : ContentPage
     {
         Aika.Text = "Aika: 00:00";
 
+        // Tyhjent‰‰ nappien arvot ja samoin tarkistus alustan.
         foreach (var button in buttons)
         {
             button.Text = "";
@@ -274,6 +274,8 @@ public partial class Ristinolla : ContentPage
             board[i] = null;
         }
 
+        // Tarkistaa kenen vuoro on kyseess‰.
+        // Jos pelaaja 1 (X) voitti niin on pelaaja 2 (O) vuoro
         pelaaja1Vuoro = !pelaaja1VoittiViimeisenPelin && pelaaja2VoittiViimeisenPelin;
         PelaajaVuoro.Text = pelaaja1Vuoro
             ? $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro"
