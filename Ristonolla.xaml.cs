@@ -71,6 +71,7 @@ public partial class Ristinolla : ContentPage
     }
 
     [Obsolete]
+    // Funktio, jossa sekuntikellon toiminnallisuus ja tallentaa pelien yhteiskeston.
     private void KaynnistaPelikello()
     {
         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
