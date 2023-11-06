@@ -16,6 +16,7 @@ public partial class Ristinolla : ContentPage
     private DateTime pelinAlkuaika;
     private double pelienYhteiskesto = 0;
     private bool peliJatkuu = false;
+    private bool pelikelloKaynnistetty = false;
     int pisteet = 0;
 
     private bool tietokoneVastustaja = false;
@@ -38,19 +39,6 @@ public partial class Ristinolla : ContentPage
 
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
 
-        pelinAlkuaika = DateTime.Now;
-
-        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-        {
-            if (peliJatkuu)
-            {
-                TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
-                Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
-
-                pelienYhteiskesto = kulunutAika.TotalSeconds;
-            }
-            return true;
-        });
     }
 
     // Funktio tietokone vastustajan toimivuus
@@ -80,11 +68,34 @@ public partial class Ristinolla : ContentPage
         }
     }
 
+    [Obsolete]
+    private void KaynnistaPelikello()
+    {
+        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+        {
+            if (peliJatkuu)
+            {
+                TimeSpan kulunutAika = DateTime.Now - pelinAlkuaika;
+                Aika.Text = "Aika: " + kulunutAika.ToString(@"mm\:ss");
+
+                pelienYhteiskesto = kulunutAika.TotalSeconds;
+                Debug.WriteLine($"Pelien yhteiskesto on {pelienYhteiskesto}");
+            }
+            return true;
+        });
+    }
     // Funktio, joka mahdollistaa nappien painalluksen ja ristinolla pelin etenemisen.
     [Obsolete]
     private async void OnButtonClick(object sender, EventArgs e)
     {
         peliJatkuu = true;
+
+        if (!pelikelloKaynnistetty)
+        {
+            pelikelloKaynnistetty = true;
+            pelinAlkuaika = DateTime.Now;
+            KaynnistaPelikello(); // Käynnistä pelikello vasta kun ensimmäinen nappi painetaan
+        }
 
         var button = (Button)sender;
         int index = buttons.IndexOf(button);
@@ -259,5 +270,6 @@ public partial class Ristinolla : ContentPage
         PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
         pelienYhteiskesto = 0;
         pelinAlkuaika = DateTime.Now;
+        pelikelloKaynnistetty = false;
     }
 }
