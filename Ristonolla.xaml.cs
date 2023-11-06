@@ -17,6 +17,8 @@ public partial class Ristinolla : ContentPage
     private double pelienYhteiskesto = 0;
     private bool peliJatkuu = false;
     private bool pelikelloKaynnistetty = false;
+    private bool pelaaja1VoittiViimeisenPelin = false;
+    private bool pelaaja2VoittiViimeisenPelin = false;
     int pisteet = 0;
 
     private bool tietokoneVastustaja = false;
@@ -140,6 +142,8 @@ public partial class Ristinolla : ContentPage
                 // Tarkistaa kumpi pelaaja voitti ja p‰ivitet‰‰n json tiedostoon oikeat arvot.
                 if (CheckForWin("X"))
                 {
+                    pelaaja1VoittiViimeisenPelin = true;
+                    pelaaja2VoittiViimeisenPelin = false;
                     pisteet = int.Parse(Pelaaja1Pisteet.Text);
                     Pelaaja1Pisteet.Text = (pisteet + 1).ToString();
                     pelaaja1ToUpdate.Voitot++;
@@ -170,6 +174,8 @@ public partial class Ristinolla : ContentPage
 
                 else if (CheckForWin("O"))
                 {
+                    pelaaja1VoittiViimeisenPelin = false;
+                    pelaaja2VoittiViimeisenPelin = true;
                     pisteet = int.Parse(Pelaaja2Pisteet.Text);
                     Pelaaja2Pisteet.Text = (pisteet + 1).ToString();
                     pelaaja2ToUpdate.Voitot++;
@@ -256,6 +262,8 @@ public partial class Ristinolla : ContentPage
     // Funktio joka aloittaa peli alusta ja uusii arvot.
     private void ResetGame()
     {
+        Aika.Text = "Aika: 00:00";
+
         foreach (var button in buttons)
         {
             button.Text = "";
@@ -266,8 +274,22 @@ public partial class Ristinolla : ContentPage
             board[i] = null;
         }
 
-        pelaaja1Vuoro = true;
-        PelaajaVuoro.Text = $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro";
+        pelaaja1Vuoro = !pelaaja1VoittiViimeisenPelin && pelaaja2VoittiViimeisenPelin;
+        PelaajaVuoro.Text = pelaaja1Vuoro
+            ? $"Pelaajan {pelaaja1.Etunimi} {pelaaja1.Sukunimi} vuoro"
+            : $"Pelaajan {pelaaja2.Etunimi} {pelaaja2.Sukunimi} vuoro";
+
+        if (pelaaja1VoittiViimeisenPelin)
+        {
+            pelaaja1VoittiViimeisenPelin = false;
+            pelaaja2VoittiViimeisenPelin = true;
+        }
+        else if (pelaaja2VoittiViimeisenPelin)
+        {
+            pelaaja1VoittiViimeisenPelin = true;
+            pelaaja2VoittiViimeisenPelin = false;
+        }
+
         pelienYhteiskesto = 0;
         pelinAlkuaika = DateTime.Now;
         pelikelloKaynnistetty = false;

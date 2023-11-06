@@ -13,7 +13,7 @@
                HorizontalOptions="Center" />
 
         <Label x:Name="Aika" 
-               Text="Aika:" 
+               Text="Aika: 00:00" 
                FontSize="20" 
                HorizontalOptions="Center" 
                Padding="20" />
