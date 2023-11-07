@@ -68,8 +68,8 @@
 	  <Compile Update="Vastustaja.xaml.cs">
 	    <DependentUpon>Vastustaja.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Ristonolla.xaml.cs">
-	    <DependentUpon>Ristonolla.xaml</DependentUpon>
+	  <Compile Update="Ristinolla.xaml.cs">
+	    <DependentUpon>Ristinolla.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Uusipelaaja.xaml.cs">
 	    <DependentUpon>Uusipelaaja.xaml</DependentUpon>
@@ -92,7 +92,7 @@
 	  <MauiXaml Update="Vastustaja.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Ristonolla.xaml">
+	  <MauiXaml Update="Ristinolla.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Uusipelaaja.xaml">

@@ -67,6 +67,7 @@ public partial class UusiPelaaja : ContentPage
 
         try
         {
+            // Tallentaa tiedot json tiedostoon
             System.IO.File.WriteAllText(filePath, updatedData);
         }
         catch (Exception ex)

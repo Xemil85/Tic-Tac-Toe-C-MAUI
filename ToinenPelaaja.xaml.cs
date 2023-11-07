@@ -23,6 +23,7 @@ public partial class ToinenPelaaja : ContentPage
     [Obsolete]
     private async void ValitseToinenPelaaja_Clicked(object sender, EventArgs e)
     {
+        // Muuttaja jolla pystyt‰‰n valitsemaan listviewist‰ pelaajan tiedot.
         var selectedPelaaja = (Pelaaja)PelaajatListView.SelectedItem;
 
         if (selectedPelaaja != null)
@@ -41,6 +42,7 @@ public partial class ToinenPelaaja : ContentPage
 
         if (System.IO.File.Exists(filePath))
         {
+            // Lukee json tiedostosta datan
             string jsonData = System.IO.File.ReadAllText(filePath);
             ObservableCollection<Pelaaja> pelaajat = JsonSerializer.Deserialize<ObservableCollection<Pelaaja>>(jsonData);
             pelaajat = new ObservableCollection<Pelaaja>(pelaajat.Where(p => (p.Etunimi != "Tietokone") && (p.Etunimi != pelaaja.Etunimi)));

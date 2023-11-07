@@ -102,6 +102,7 @@ public partial class Ristinolla : ContentPage
         var button = (Button)sender;
         int index = buttons.IndexOf(button);
 
+        // Laittaa json tiedoston sovelluksen sis‰lle bin kansioon.
         string projectDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         string fileName = "Pelaajat.json";
         string filePath = Path.Combine(projectDirectory, fileName);
@@ -116,6 +117,7 @@ public partial class Ristinolla : ContentPage
 
             if (board[index] == null)
             {
+                // Lukee json tiedostosta datan
                 string jsonData = File.ReadAllText(filePath);
                 ObservableCollection<Pelaaja> pelaajat = JsonSerializer.Deserialize<ObservableCollection<Pelaaja>>(jsonData);
 
@@ -140,6 +142,7 @@ public partial class Ristinolla : ContentPage
                 pelaaja1Vuoro = !pelaaja1Vuoro;
 
                 // Tarkistaa kumpi pelaaja voitti ja p‰ivitet‰‰n json tiedostoon oikeat arvot.
+                // Pelaaja 1 voitto
                 if (CheckForWin("X"))
                 {
                     pelaaja1VoittiViimeisenPelin = true;
@@ -172,6 +175,7 @@ public partial class Ristinolla : ContentPage
 
                 }
 
+                // Pelaaja 2 voitto
                 else if (CheckForWin("O"))
                 {
                     pelaaja1VoittiViimeisenPelin = false;
@@ -201,6 +205,8 @@ public partial class Ristinolla : ContentPage
                         await Navigation.PushAsync(new MainPage());
                     }
                 }
+
+                // Tasapeli, jos tarkistuksessa k‰y ilmi ett‰ ei ole kell‰‰n pelaajalla vaaka, pysty tai vinorivi‰.
                 else if (board.All(cell => cell != null))
                 {
                     pelaaja1ToUpdate.Tasapelit++;
@@ -244,6 +250,7 @@ public partial class Ristinolla : ContentPage
         "048", "246" // Vinottaiset
         };
 
+        // Tarkistaa rivi kerraltaan voittoehdot.
         foreach (var line in lines)
         {
             char a = board[line[0] - '0']?[0] ?? ' ';
@@ -270,6 +277,7 @@ public partial class Ristinolla : ContentPage
             button.Text = "";
         }
 
+        // Tyhjent‰‰ tarkistusalustan.
         for (int i = 0; i < board.Length; i++)
         {
             board[i] = null;

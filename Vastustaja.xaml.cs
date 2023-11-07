@@ -56,6 +56,7 @@ public partial class Vastustaja : ContentPage
 
                 try
                 {
+                    // Tallentaa tiedot json tiedostoon
                     System.IO.File.WriteAllText(filePath, updatedData);
                 }
                 catch (Exception ex)
